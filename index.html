@@ -1,670 +1,654 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.5">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JUNGBURG — アートを着る</title>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&family=Noto+Serif+JP:wght@300;400&family=Space+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0c0c0f;
+      --white: #f4f4f8;
+      --blue:  #4a6fa5;
+      --blue-light: #7ca3cc;
+      --blue-dark: #1e3a5f;
+      --steel: #b8c8d8;
+      --muted: #5a6070;
+      --border: rgba(180,200,220,0.12);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(100,150,200,0.055) 1px, transparent 1px);
+      background-size: 30px 30px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 48px;
+      height: 76px;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      background: rgba(12,12,15,0.85);
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    /* White pill — logo sits on it cleanly */
+    .logo-text {
+      font-family: 'Caveat', cursive;
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: var(--white);
+      letter-spacing: 0.08em;
+      transition: color 0.3s;
+    }
+    .logo-wrap:hover .logo-text {
+      color: var(--blue-light);
+    }
+
+    nav a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 32px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    nav a:hover { color: var(--blue-light); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 100px 48px 64px;
+      position: relative;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    /* Big centred logo in hero bg */
+    .hero-logo-bg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(70vw, 600px);
+      opacity: 0.04;
+      pointer-events: none;
+      filter: invert(1);  /* white silhouette on dark bg */
+      animation: breathe 8s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%,100% { opacity: 0.04; transform: translate(-50%,-50%) scale(1); }
+      50%      { opacity: 0.07; transform: translate(-50%,-50%) scale(1.03); }
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: 10%; right: -10%;
+      width: 60vw; height: 60vw;
+      background: radial-gradient(ellipse, rgba(74,111,165,0.11) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-glow2 {
+      position: absolute;
+      bottom: 5%; left: -15%;
+      width: 45vw; height: 45vw;
+      background: radial-gradient(ellipse, rgba(30,58,95,0.16) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 640px; }
+
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.28em;
+      color: var(--blue-light);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s ease forwards;
+    }
+
+    .hero-title {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      font-weight: 600;
+      line-height: 1.05;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.4s ease forwards;
+    }
+    .hero-title em {
+      font-style: normal;
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--blue-light);
+    }
+
+    .hero-sub {
+      max-width: 360px;
+      font-size: 0.83rem;
+      line-height: 1.95;
+      color: var(--steel);
+      opacity: 0;
+      animation: fadeUp 0.9s 0.6s ease forwards;
+      margin-bottom: 40px;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.63rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      padding: 14px 36px;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.3s, transform 0.2s;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.8s ease forwards;
+    }
+    .hero-cta::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--blue);
+      transform: translateX(-101%);
+      transition: transform 0.4s cubic-bezier(0.77,0,0.175,1);
+    }
+    .hero-cta:hover::before { transform: translateX(0); }
+    .hero-cta:hover { color: var(--white); transform: translate(-2px,-2px); }
+    .hero-cta span { position: relative; z-index: 1; }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 100px 48px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.56rem;
+      letter-spacing: 0.28em;
+      color: var(--blue-light);
+      text-transform: uppercase;
+      margin-bottom: 36px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1; max-width: 56px;
+      height: 1px;
+      background: var(--blue);
+    }
+
+    /* ── CONCEPT ── */
+    #concept {
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+    }
+
+    .concept-headline {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(2.4rem, 4.8vw, 4rem);
+      font-weight: 600;
+      line-height: 1.1;
+    }
+    .concept-headline .line2 {
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--blue-light);
+    }
+
+    .concept-body {
+      font-size: 0.84rem;
+      line-height: 2;
+      color: var(--steel);
+    }
+    .concept-body p + p { margin-top: 1em; }
+
+    /* ── WORKS ── */
+    #works { border-top: 1px solid var(--border); }
+
+    .works-intro { max-width: 520px; margin-bottom: 52px; }
+    .works-title {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 600; margin-bottom: 12px;
+    }
+    .works-desc {
+      font-size: 0.82rem; line-height: 1.9; color: var(--steel);
+    }
+
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3px;
+    }
+
+    .work-item {
+      position: relative;
+      aspect-ratio: 1/1.2;
+      overflow: hidden;
+      cursor: crosshair;
+      background: #0e121e;
+    }
+    .work-item svg { width: 100%; height: 100%; display: block; }
+    .work-item-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 16px;
+      background: linear-gradient(to top, rgba(8,12,28,0.96) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .work-item:hover .work-item-info { opacity: 1; }
+    .work-item-artist {
+      font-family: 'Caveat', cursive;
+      font-size: 0.95rem;
+      color: var(--white); margin-bottom: 2px;
+    }
+    .work-item-school {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.46rem; letter-spacing: 0.12em;
+      color: var(--blue-light); text-transform: uppercase;
+    }
+    .work-item-num {
+      position: absolute; top: 12px; left: 14px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.46rem; letter-spacing: 0.1em;
+      color: rgba(124,163,204,0.28);
+    }
+
+    /* ── ARTISTS ── */
+    #artists {
+      border-top: 1px solid var(--border);
+      background: rgba(30,58,95,0.06);
+    }
+    .artists-title {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 600; margin-bottom: 48px;
+    }
+    .artist-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .artist-card {
+      position: relative; aspect-ratio: 3/4;
+      overflow: hidden; cursor: crosshair;
+    }
+    .artist-card::before { content: ''; position: absolute; inset: 0; }
+    .artist-card:nth-child(1)::before { background: linear-gradient(150deg, #0e1824 0%, #1e3a5f 55%, #4a6fa5 100%); }
+    .artist-card:nth-child(2)::before { background: radial-gradient(ellipse at 35% 60%, #1a2a40 0%, #080c14 75%); }
+    .artist-card:nth-child(3)::before { background: linear-gradient(40deg, #0c1520 0%, #2a4a70 50%, #7ca3cc 100%); }
+
+    .artist-card-inner {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 24px;
+      background: linear-gradient(to top, rgba(8,12,20,0.92) 0%, transparent 52%);
+      transform: translateY(36px);
+      transition: transform 0.4s ease;
+    }
+    .artist-card:hover .artist-card-inner { transform: translateY(0); }
+    .artist-univ {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.5rem; letter-spacing: 0.18em;
+      color: var(--blue-light); text-transform: uppercase; margin-bottom: 5px;
+    }
+    .artist-name {
+      font-family: 'Caveat', cursive;
+      font-size: 1.4rem; font-weight: 600;
+      color: var(--white); margin-bottom: 6px;
+    }
+    .artist-work {
+      font-size: 0.72rem; color: var(--steel);
+      line-height: 1.5; opacity: 0.85;
+    }
+    .artist-tag {
+      position: absolute; top: 16px; right: 16px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.46rem; letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(124,163,204,0.5);
+      border: 1px solid rgba(74,111,165,0.28);
+      padding: 3px 8px;
+    }
+
+    /* ── SHOP ── */
+    #shop {
+      border-top: 1px solid var(--border);
+      text-align: center; padding: 120px 48px;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 50% 100%, rgba(30,58,95,0.2) 0%, transparent 60%);
+    }
+    #shop::before {
+      content: 'SHOP';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Caveat', cursive;
+      font-size: clamp(8rem, 22vw, 18rem);
+      color: rgba(74,111,165,0.04);
+      pointer-events: none; white-space: nowrap;
+    }
+    .shop-headline {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 600; margin-bottom: 16px; position: relative;
+    }
+    .shop-sub {
+      font-size: 0.82rem; color: var(--muted);
+      line-height: 1.8; margin-bottom: 48px; position: relative;
+    }
+    .shop-btn {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--white);
+      border: 1px solid rgba(74,111,165,0.5);
+      padding: 17px 52px; text-decoration: none;
+      position: relative; overflow: hidden; transition: color 0.3s;
+    }
+    .shop-btn::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--blue);
+      transform: translateX(-101%);
+      transition: transform 0.4s cubic-bezier(0.77,0,0.175,1);
+    }
+    .shop-btn:hover::before { transform: translateX(0); }
+    .shop-btn span { position: relative; z-index: 1; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      position: relative; z-index: 2;
+    }
+    .footer-logo-text {
+      font-family: 'Caveat', cursive;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+    .footer-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.5rem; letter-spacing: 0.1em; color: var(--muted);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      header { padding: 0 20px; }
+      nav { display: none; }
+      #hero, section { padding-left: 20px; padding-right: 20px; }
+      #concept { grid-template-columns: 1fr; gap: 36px; }
+      .works-grid { grid-template-columns: repeat(2, 1fr); }
+      .artist-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="ja"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;JUNGBURG — アートを着る&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&amp;family=Noto+Serif+JP:wght@300;400&amp;family=Space+Mono&amp;display=swap" rel="stylesheet"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>:root {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--black: #0c0c0f;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--white: #f4f4f8;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--blue:<span class="Apple-converted-space">  </span>#4a6fa5;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--blue-light: #7ca3cc;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--blue-dark: #1e3a5f;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--steel: #b8c8d8;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--muted: #5a6070;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--border: rgba(180,200,220,0.12);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>html { scroll-behavior: smooth; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: var(--black);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--white);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Noto Serif JP', serif;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 300;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>overflow-x: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor: crosshair;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>body::after {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>content: '';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: fixed;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>inset: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background-image: radial-gradient(circle, rgba(100,150,200,0.055) 1px, transparent 1px);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background-size: 30px 30px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>pointer-events: none;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>z-index: 0;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>body::before {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>content: '';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: fixed;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>inset: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0.03;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>pointer-events: none;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>z-index: 1;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* ── HEADER ── */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>header {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: fixed;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>top: 0; left: 0; right: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>z-index: 100;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content: space-between;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 0 48px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>height: 76px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-bottom: 1px solid var(--border);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>backdrop-filter: blur(20px);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: rgba(12,12,15,0.85);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.logo-wrap {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-decoration: none;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* White pill — logo sits on it cleanly */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.logo-text {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Caveat', cursive;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1.6rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--white);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>letter-spacing: 0.08em;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transition: color 0.3s;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.logo-wrap:hover .logo-text {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--blue-light);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>nav a {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Space Mono', monospace;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.58rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>letter-spacing: 0.18em;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--muted);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-decoration: none;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-left: 32px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transition: color 0.3s;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>nav a:hover { color: var(--blue-light); }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* ── HERO ── */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#hero {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>min-height: 100vh;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 100px 48px 64px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>z-index: 2;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* Big centred logo in hero bg */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hero-logo-bg {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>top: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>left: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transform: translate(-50%, -50%);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: min(70vw, 600px);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0.04;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>pointer-events: none;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>filter: invert(1);<span class="Apple-converted-space">  </span>/* white silhouette on dark bg */</p>
-<p class="p1"><span class="Apple-converted-space">      </span>animation: breathe 8s ease-in-out infinite;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>@keyframes breathe {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>0%,100% { opacity: 0.04; transform: translate(-50%,-50%) scale(1); }</p>
-<p class="p1"><span class="Apple-converted-space">      </span>50%<span class="Apple-converted-space">      </span>{ opacity: 0.07; transform: translate(-50%,-50%) scale(1.03); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hero-glow {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>top: 10%; right: -10%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: 60vw; height: 60vw;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: radial-gradient(ellipse, rgba(74,111,165,0.11) 0%, transparent 65%);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>pointer-events: none;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hero-glow2 {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>bottom: 5%; left: -15%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: 45vw; height: 45vw;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: radial-gradient(ellipse, rgba(30,58,95,0.16) 0%, transparent 65%);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>pointer-events: none;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hero-content { position: relative; z-index: 2; max-width: 640px; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hero-eyebrow {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Space Mono', monospace;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.58rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>letter-spacing: 0.28em;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--blue-light);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>animation: fadeUp 0.8s 0.2s ease forwards;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hero-title {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Caveat', cursive;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: clamp(3.5rem, 10vw, 8rem);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>line-height: 1.05;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>animation: fadeUp 0.9s 0.4s ease forwards;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hero-title em {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-style: normal;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: transparent;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>-webkit-text-stroke: 1.5px var(--blue-light);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hero-sub {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>max-width: 360px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.83rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>line-height: 1.95;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--steel);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>animation: fadeUp 0.9s 0.6s ease forwards;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hero-cta {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: inline-block;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Space Mono', monospace;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.63rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>letter-spacing: 0.2em;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--black);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: var(--white);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 14px 36px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-decoration: none;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transition: color 0.3s, transform 0.2s;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>animation: fadeUp 0.9s 0.8s ease forwards;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hero-cta::before {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>content: '';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: absolute; inset: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: var(--blue);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transform: translateX(-101%);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transition: transform 0.4s cubic-bezier(0.77,0,0.175,1);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hero-cta:hover::before { transform: translateX(0); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hero-cta:hover { color: var(--white); transform: translate(-2px,-2px); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hero-cta span { position: relative; z-index: 1; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* ── SECTIONS ── */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>section {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 100px 48px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>z-index: 2;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.section-label {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Space Mono', monospace;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.56rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>letter-spacing: 0.28em;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--blue-light);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 36px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.section-label::after {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>content: '';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex: 1; max-width: 56px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>height: 1px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: var(--blue);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* ── CONCEPT ── */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#concept {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-top: 1px solid var(--border);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid-template-columns: 1fr 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap: 72px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.concept-headline {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Caveat', cursive;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: clamp(2.4rem, 4.8vw, 4rem);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>line-height: 1.1;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.concept-headline .line2 {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: transparent;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>-webkit-text-stroke: 1.5px var(--blue-light);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.concept-body {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.84rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>line-height: 2;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--steel);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.concept-body p + p { margin-top: 1em; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* ── WORKS ── */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#works { border-top: 1px solid var(--border); }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.works-intro { max-width: 520px; margin-bottom: 52px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.works-title {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Caveat', cursive;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: clamp(2rem, 4vw, 3.2rem);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600; margin-bottom: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.works-desc {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.82rem; line-height: 1.9; color: var(--steel);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.works-grid {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid-template-columns: repeat(4, 1fr);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap: 3px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.work-item {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>aspect-ratio: 1/1.2;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor: crosshair;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: #0e121e;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.work-item svg { width: 100%; height: 100%; display: block; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.work-item-info {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>bottom: 0; left: 0; right: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: linear-gradient(to top, rgba(8,12,28,0.96) 0%, transparent 100%);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transition: opacity 0.35s ease;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.work-item:hover .work-item-info { opacity: 1; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.work-item-artist {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Caveat', cursive;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.95rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--white); margin-bottom: 2px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.work-item-school {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Space Mono', monospace;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.46rem; letter-spacing: 0.12em;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--blue-light); text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.work-item-num {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: absolute; top: 12px; left: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Space Mono', monospace;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.46rem; letter-spacing: 0.1em;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: rgba(124,163,204,0.28);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* ── ARTISTS ── */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#artists {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-top: 1px solid var(--border);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: rgba(30,58,95,0.06);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.artists-title {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Caveat', cursive;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: clamp(2rem, 4vw, 3.2rem);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600; margin-bottom: 48px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.artist-grid {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid-template-columns: repeat(3, 1fr);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap: 2px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.artist-card {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: relative; aspect-ratio: 3/4;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden; cursor: crosshair;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.artist-card::before { content: ''; position: absolute; inset: 0; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.artist-card:nth-child(1)::before { background: linear-gradient(150deg, #0e1824 0%, #1e3a5f 55%, #4a6fa5 100%); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.artist-card:nth-child(2)::before { background: radial-gradient(ellipse at 35% 60%, #1a2a40 0%, #080c14 75%); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.artist-card:nth-child(3)::before { background: linear-gradient(40deg, #0c1520 0%, #2a4a70 50%, #7ca3cc 100%); }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.artist-card-inner {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: absolute; inset: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex; flex-direction: column; justify-content: flex-end;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: linear-gradient(to top, rgba(8,12,20,0.92) 0%, transparent 52%);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transform: translateY(36px);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transition: transform 0.4s ease;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.artist-card:hover .artist-card-inner { transform: translateY(0); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.artist-univ {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Space Mono', monospace;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.5rem; letter-spacing: 0.18em;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--blue-light); text-transform: uppercase; margin-bottom: 5px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.artist-name {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Caveat', cursive;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1.4rem; font-weight: 600;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--white); margin-bottom: 6px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.artist-work {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.72rem; color: var(--steel);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>line-height: 1.5; opacity: 0.85;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.artist-tag {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: absolute; top: 16px; right: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Space Mono', monospace;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.46rem; letter-spacing: 0.1em;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: rgba(124,163,204,0.5);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid rgba(74,111,165,0.28);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 3px 8px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* ── SHOP ── */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#shop {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-top: 1px solid var(--border);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-align: center; padding: 120px 48px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: radial-gradient(ellipse at 50% 100%, rgba(30,58,95,0.2) 0%, transparent 60%);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#shop::before {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>content: 'SHOP';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: absolute; top: 50%; left: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transform: translate(-50%, -50%);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Caveat', cursive;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: clamp(8rem, 22vw, 18rem);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: rgba(74,111,165,0.04);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>pointer-events: none; white-space: nowrap;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.shop-headline {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Caveat', cursive;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: clamp(2.2rem, 4.5vw, 3.8rem);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600; margin-bottom: 16px; position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.shop-sub {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.82rem; color: var(--muted);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>line-height: 1.8; margin-bottom: 48px; position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.shop-btn {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: inline-block;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Space Mono', monospace;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.65rem; letter-spacing: 0.22em;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-transform: uppercase; color: var(--white);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid rgba(74,111,165,0.5);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 17px 52px; text-decoration: none;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: relative; overflow: hidden; transition: color 0.3s;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.shop-btn::before {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>content: ''; position: absolute; inset: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: var(--blue);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transform: translateX(-101%);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transition: transform 0.4s cubic-bezier(0.77,0,0.175,1);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.shop-btn:hover::before { transform: translateX(0); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.shop-btn span { position: relative; z-index: 1; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* ── FOOTER ── */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>footer {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-top: 1px solid var(--border);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 28px 48px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex; justify-content: space-between; align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: relative; z-index: 2;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.footer-logo-text {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Caveat', cursive;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1.1rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--muted);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>letter-spacing: 0.08em;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.footer-copy {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Space Mono', monospace;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.5rem; letter-spacing: 0.1em; color: var(--muted);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* ── ANIMATIONS ── */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>@keyframes fadeUp {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>from { opacity: 0; transform: translateY(20px); }</p>
-<p class="p1"><span class="Apple-converted-space">      </span>to <span class="Apple-converted-space">  </span>{ opacity: 1; transform: translateY(0); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.reveal {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0; transform: translateY(28px);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transition: opacity 0.8s ease, transform 0.8s ease;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.reveal.visible { opacity: 1; transform: translateY(0); }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* ── MOBILE ── */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>@media (max-width: 768px) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>header { padding: 0 20px; }</p>
-<p class="p1"><span class="Apple-converted-space">      </span>nav { display: none; }</p>
-<p class="p1"><span class="Apple-converted-space">      </span>#hero, section { padding-left: 20px; padding-right: 20px; }</p>
-<p class="p1"><span class="Apple-converted-space">      </span>#concept { grid-template-columns: 1fr; gap: 36px; }</p>
-<p class="p1"><span class="Apple-converted-space">      </span>.works-grid { grid-template-columns: repeat(2, 1fr); }</p>
-<p class="p1"><span class="Apple-converted-space">      </span>.artist-grid { grid-template-columns: 1fr; }</p>
-<p class="p1"><span class="Apple-converted-space">      </span>footer { flex-direction: column; gap: 12px; text-align: center; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- HEADER --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;header&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;a href="#" class="logo-wrap"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="logo-text"&gt;jung burg&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;nav&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;a href="#concept"&gt;コンセプト&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;a href="#works"&gt;作品&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;a href="#artists"&gt;アーティスト&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;a href="#shop"&gt;ショップ&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/nav&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- HERO --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;section id="hero"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="hero-glow"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="hero-glow2"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Giant ghost logo in background --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;img src="data:image/png;base64,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" alt="" class="hero-logo-bg" aria-hidden="true"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="hero-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;p class="hero-eyebrow"&gt;Art-Wearable Brand&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;h1 class="hero-title"&gt;アートを&lt;br&gt;&lt;em&gt;着る。&lt;/em&gt;&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;p class="hero-sub"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>美大生の生きた作品が、あなたの肌に宿る。&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>キャンバスを超えて、街へ。</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;a href="#shop" class="hero-cta"&gt;&lt;span&gt;コレクションを見る&lt;/span&gt;&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- CONCEPT --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;section id="concept"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="section-label"&gt;Concept&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;h2 class="concept-headline"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>アートは&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="line2"&gt;美術館に&lt;/span&gt;&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>ない。</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="concept-body"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;JUNGBURGは、「アートを着る」をコンセプトに生まれたアパレルブランドです。&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;全国の美大生が生み出す作品——絵画、版画、イラスト——を、そのままウェアラブルな1枚に落とし込みます。アートはギャラリーに飾られるだけのものではなく、日常の中で呼吸するものだと私たちは信じています。&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;着る人もアートの一部になる。それがJUNGBURGです。&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- WORKS --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;section id="works"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="works-intro reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="section-label"&gt;Works&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;h2 class="works-title"&gt;美大生の作品&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;p class="works-desc"&gt;全国の美大生から届いたアート作品。それぞれの感性と物語が、一枚の服になります。&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="works-grid"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="work-item reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;svg viewBox="0 0 300 360" xmlns="http://www.w3.org/2000/svg"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;rect width="300" height="360" fill="#0e121c"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;circle cx="150" cy="130" r="80" fill="none" stroke="#2a4060" stroke-width="1"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;circle cx="150" cy="130" r="55" fill="none" stroke="#1a2a40" stroke-width="0.5"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;circle cx="150" cy="130" r="30" fill="rgba(74,111,165,0.08)" stroke="#3a5a8a" stroke-width="0.8"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;line x1="70" y1="130" x2="230" y2="130" stroke="#1e3050" stroke-width="0.8"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;line x1="150" y1="50" x2="150" y2="210" stroke="#1e3050" stroke-width="0.8"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;rect x="100" y="220" width="100" height="80" fill="none" stroke="#2a4060" stroke-width="0.8"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;text x="150" y="345" text-anchor="middle" font-family="serif" font-size="9" fill="#2a4060" letter-spacing="4"&gt;SERIES 01&lt;/text&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="work-item-num"&gt;01&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="work-item-info"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="work-item-artist"&gt;山田 美咲&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="work-item-school"&gt;東京藝術大学 — 油彩&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="work-item reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;svg viewBox="0 0 300 360" xmlns="http://www.w3.org/2000/svg"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;rect width="300" height="360" fill="#0a0e18"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;polygon points="150,55 248,280 52,280" fill="none" stroke="#2e4870" stroke-width="1"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;polygon points="150,85 220,265 80,265" fill="none" stroke="#1e3050" stroke-width="0.5"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;polygon points="150,115 192,250 108,250" fill="rgba(30,58,95,0.15)" stroke="#3a5a8a" stroke-width="0.8"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;circle cx="150" cy="190" r="18" fill="#111828" stroke="#2a4060" stroke-width="0.8"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;text x="150" y="335" text-anchor="middle" font-family="serif" font-size="9" fill="#2a4060" letter-spacing="4"&gt;SERIES 02&lt;/text&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="work-item-num"&gt;02&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="work-item-info"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="work-item-artist"&gt;Kenji Ōta&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="work-item-school"&gt;武蔵野美術大学 — 版画&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="work-item reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;svg viewBox="0 0 300 360" xmlns="http://www.w3.org/2000/svg"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;rect width="300" height="360" fill="#0c1018"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;path d="M 40 300 Q 100 80 150 180 Q 200 280 260 60" fill="none" stroke="#2e5080" stroke-width="1.5"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;path d="M 40 280 Q 100 100 150 200 Q 200 300 260 80" fill="none" stroke="#1e3050" stroke-width="0.5"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;path d="M 40 320 Q 100 60 150 160 Q 200 260 260 40" fill="none" stroke="#162438" stroke-width="0.5"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;circle cx="150" cy="180" r="6" fill="#4a6fa5"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;circle cx="100" cy="140" r="3" fill="#2a4a70"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;circle cx="200" cy="220" r="3" fill="#2a4a70"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;text x="150" y="345" text-anchor="middle" font-family="serif" font-size="9" fill="#2a4060" letter-spacing="4"&gt;SERIES 03&lt;/text&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="work-item-num"&gt;03&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="work-item-info"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="work-item-artist"&gt;Hana Shirai&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="work-item-school"&gt;多摩美術大学 — デジタル&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="work-item reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;svg viewBox="0 0 300 360" xmlns="http://www.w3.org/2000/svg"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;rect width="300" height="360" fill="#0a0e16"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;g stroke="#1a2a40" stroke-width="0.5" fill="none"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;line x1="0" y1="60" x2="300" y2="60"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;line x1="0" y1="120" x2="300" y2="120"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;line x1="0" y1="180" x2="300" y2="180"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;line x1="0" y1="240" x2="300" y2="240"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;line x1="0" y1="300" x2="300" y2="300"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;line x1="60" y1="0" x2="60" y2="360"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;line x1="120" y1="0" x2="120" y2="360"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;line x1="180" y1="0" x2="180" y2="360"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;line x1="240" y1="0" x2="240" y2="360"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/g&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;rect x="80" y="80" width="140" height="140" fill="#111828" stroke="#2e4870" stroke-width="1"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;rect x="100" y="100" width="100" height="100" fill="#151e2e" stroke="#2a4060" stroke-width="0.5"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;rect x="120" y="120" width="60" height="60" fill="rgba(74,111,165,0.1)"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;text x="150" y="345" text-anchor="middle" font-family="serif" font-size="9" fill="#2a4060" letter-spacing="4"&gt;SERIES 04&lt;/text&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="work-item-num"&gt;04&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="work-item-info"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="work-item-artist"&gt;田中 蒼&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="work-item-school"&gt;京都市立芸術大学 — 版画&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- ARTISTS --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;section id="artists"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="artists-header reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="section-label"&gt;Artists&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;h2 class="artists-title"&gt;参加アーティスト&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="artist-grid"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="artist-card reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="artist-tag"&gt;2024 Collection&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="artist-card-inner"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="artist-univ"&gt;東京藝術大学&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;h3 class="artist-name"&gt;山田 美咲&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="artist-work"&gt;油彩「境界」シリーズ — 身体と空間の間に生まれる曖昧さを探求した抽象絵画&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="artist-card reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="artist-tag"&gt;2024 Collection&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="artist-card-inner"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="artist-univ"&gt;武蔵野美術大学&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;h3 class="artist-name"&gt;Kenji Ōta&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="artist-work"&gt;シルクスクリーン「Organic Grid」— 植物の細胞構造からインスピレーションを得た版画作品&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="artist-card reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="artist-tag"&gt;2024 Collection&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="artist-card-inner"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="artist-univ"&gt;多摩美術大学&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;h3 class="artist-name"&gt;Hana Shirai&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="artist-work"&gt;デジタルドローイング「Liminal」— 夢と現実のはざまにある情景を描いたイラストレーション&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- SHOP --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;section id="shop"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2 class="shop-headline reveal"&gt;服を買う。&lt;br&gt;アートを纏う。&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="shop-sub reveal"&gt;JUNGBURGのコレクションは、オンラインショップで購入いただけます。&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;a href="https://your-shop-url.com" class="shop-btn reveal" target="_blank" rel="noopener"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;span&gt;オンラインショップへ →&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- FOOTER --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;footer&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span class="footer-logo-text"&gt;jung burg&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="footer-copy"&gt;© 2025 JUNGBURG. All rights reserved.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/footer&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const reveals = document.querySelectorAll('.reveal');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const observer = new IntersectionObserver((entries) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>entries.forEach((entry, i) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (entry.isIntersecting) {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>setTimeout(() =&gt; entry.target.classList.add('visible'), i * 70);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>observer.unobserve(entry.target);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}, { threshold: 0.1 });</p>
-<p class="p1"><span class="Apple-converted-space">    </span>reveals.forEach(el =&gt; observer.observe(el));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+
+  <!-- HEADER -->
+  <header>
+    <a href="#" class="logo-wrap">
+      <span class="logo-text">jung burg</span>
+    </a>
+    <nav>
+      <a href="#concept">コンセプト</a>
+      <a href="#works">作品</a>
+      <a href="#artists">アーティスト</a>
+      <a href="#shop">ショップ</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+    <!-- Giant ghost logo in background -->
+    <img src="data:image/png;base64,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" alt="" class="hero-logo-bg" aria-hidden="true">
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">Art-Wearable Brand</p>
+      <h1 class="hero-title">アートを<br><em>着る。</em></h1>
+      <p class="hero-sub">
+        美大生の生きた作品が、あなたの肌に宿る。<br>
+        キャンバスを超えて、街へ。
+      </p>
+      <a href="#shop" class="hero-cta"><span>コレクションを見る</span></a>
+    </div>
+  </section>
+
+  <!-- CONCEPT -->
+  <section id="concept">
+    <div class="reveal">
+      <div class="section-label">Concept</div>
+      <h2 class="concept-headline">
+        アートは<br>
+        <span class="line2">美術館に</span><br>
+        ない。
+      </h2>
+    </div>
+    <div class="reveal">
+      <div class="concept-body">
+        <p>JUNGBURGは、「アートを着る」をコンセプトに生まれたアパレルブランドです。</p>
+        <p>全国の美大生が生み出す作品——絵画、版画、イラスト——を、そのままウェアラブルな1枚に落とし込みます。アートはギャラリーに飾られるだけのものではなく、日常の中で呼吸するものだと私たちは信じています。</p>
+        <p>着る人もアートの一部になる。それがJUNGBURGです。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKS -->
+  <section id="works">
+    <div class="works-intro reveal">
+      <div class="section-label">Works</div>
+      <h2 class="works-title">美大生の作品</h2>
+      <p class="works-desc">全国の美大生から届いたアート作品。それぞれの感性と物語が、一枚の服になります。</p>
+    </div>
+    <div class="works-grid">
+      <div class="work-item reveal">
+        <svg viewBox="0 0 300 360" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="360" fill="#0e121c"/>
+          <circle cx="150" cy="130" r="80" fill="none" stroke="#2a4060" stroke-width="1"/>
+          <circle cx="150" cy="130" r="55" fill="none" stroke="#1a2a40" stroke-width="0.5"/>
+          <circle cx="150" cy="130" r="30" fill="rgba(74,111,165,0.08)" stroke="#3a5a8a" stroke-width="0.8"/>
+          <line x1="70" y1="130" x2="230" y2="130" stroke="#1e3050" stroke-width="0.8"/>
+          <line x1="150" y1="50" x2="150" y2="210" stroke="#1e3050" stroke-width="0.8"/>
+          <rect x="100" y="220" width="100" height="80" fill="none" stroke="#2a4060" stroke-width="0.8"/>
+          <text x="150" y="345" text-anchor="middle" font-family="serif" font-size="9" fill="#2a4060" letter-spacing="4">SERIES 01</text>
+        </svg>
+        <span class="work-item-num">01</span>
+        <div class="work-item-info">
+          <p class="work-item-artist">山田 美咲</p>
+          <p class="work-item-school">東京藝術大学 — 油彩</p>
+        </div>
+      </div>
+      <div class="work-item reveal">
+        <svg viewBox="0 0 300 360" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="360" fill="#0a0e18"/>
+          <polygon points="150,55 248,280 52,280" fill="none" stroke="#2e4870" stroke-width="1"/>
+          <polygon points="150,85 220,265 80,265" fill="none" stroke="#1e3050" stroke-width="0.5"/>
+          <polygon points="150,115 192,250 108,250" fill="rgba(30,58,95,0.15)" stroke="#3a5a8a" stroke-width="0.8"/>
+          <circle cx="150" cy="190" r="18" fill="#111828" stroke="#2a4060" stroke-width="0.8"/>
+          <text x="150" y="335" text-anchor="middle" font-family="serif" font-size="9" fill="#2a4060" letter-spacing="4">SERIES 02</text>
+        </svg>
+        <span class="work-item-num">02</span>
+        <div class="work-item-info">
+          <p class="work-item-artist">Kenji Ōta</p>
+          <p class="work-item-school">武蔵野美術大学 — 版画</p>
+        </div>
+      </div>
+      <div class="work-item reveal">
+        <svg viewBox="0 0 300 360" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="360" fill="#0c1018"/>
+          <path d="M 40 300 Q 100 80 150 180 Q 200 280 260 60" fill="none" stroke="#2e5080" stroke-width="1.5"/>
+          <path d="M 40 280 Q 100 100 150 200 Q 200 300 260 80" fill="none" stroke="#1e3050" stroke-width="0.5"/>
+          <path d="M 40 320 Q 100 60 150 160 Q 200 260 260 40" fill="none" stroke="#162438" stroke-width="0.5"/>
+          <circle cx="150" cy="180" r="6" fill="#4a6fa5"/>
+          <circle cx="100" cy="140" r="3" fill="#2a4a70"/>
+          <circle cx="200" cy="220" r="3" fill="#2a4a70"/>
+          <text x="150" y="345" text-anchor="middle" font-family="serif" font-size="9" fill="#2a4060" letter-spacing="4">SERIES 03</text>
+        </svg>
+        <span class="work-item-num">03</span>
+        <div class="work-item-info">
+          <p class="work-item-artist">Hana Shirai</p>
+          <p class="work-item-school">多摩美術大学 — デジタル</p>
+        </div>
+      </div>
+      <div class="work-item reveal">
+        <svg viewBox="0 0 300 360" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="360" fill="#0a0e16"/>
+          <g stroke="#1a2a40" stroke-width="0.5" fill="none">
+            <line x1="0" y1="60" x2="300" y2="60"/>
+            <line x1="0" y1="120" x2="300" y2="120"/>
+            <line x1="0" y1="180" x2="300" y2="180"/>
+            <line x1="0" y1="240" x2="300" y2="240"/>
+            <line x1="0" y1="300" x2="300" y2="300"/>
+            <line x1="60" y1="0" x2="60" y2="360"/>
+            <line x1="120" y1="0" x2="120" y2="360"/>
+            <line x1="180" y1="0" x2="180" y2="360"/>
+            <line x1="240" y1="0" x2="240" y2="360"/>
+          </g>
+          <rect x="80" y="80" width="140" height="140" fill="#111828" stroke="#2e4870" stroke-width="1"/>
+          <rect x="100" y="100" width="100" height="100" fill="#151e2e" stroke="#2a4060" stroke-width="0.5"/>
+          <rect x="120" y="120" width="60" height="60" fill="rgba(74,111,165,0.1)"/>
+          <text x="150" y="345" text-anchor="middle" font-family="serif" font-size="9" fill="#2a4060" letter-spacing="4">SERIES 04</text>
+        </svg>
+        <span class="work-item-num">04</span>
+        <div class="work-item-info">
+          <p class="work-item-artist">田中 蒼</p>
+          <p class="work-item-school">京都市立芸術大学 — 版画</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARTISTS -->
+  <section id="artists">
+    <div class="artists-header reveal">
+      <div class="section-label">Artists</div>
+      <h2 class="artists-title">参加アーティスト</h2>
+    </div>
+    <div class="artist-grid">
+      <div class="artist-card reveal">
+        <span class="artist-tag">2024 Collection</span>
+        <div class="artist-card-inner">
+          <p class="artist-univ">東京藝術大学</p>
+          <h3 class="artist-name">山田 美咲</h3>
+          <p class="artist-work">油彩「境界」シリーズ — 身体と空間の間に生まれる曖昧さを探求した抽象絵画</p>
+        </div>
+      </div>
+      <div class="artist-card reveal">
+        <span class="artist-tag">2024 Collection</span>
+        <div class="artist-card-inner">
+          <p class="artist-univ">武蔵野美術大学</p>
+          <h3 class="artist-name">Kenji Ōta</h3>
+          <p class="artist-work">シルクスクリーン「Organic Grid」— 植物の細胞構造からインスピレーションを得た版画作品</p>
+        </div>
+      </div>
+      <div class="artist-card reveal">
+        <span class="artist-tag">2024 Collection</span>
+        <div class="artist-card-inner">
+          <p class="artist-univ">多摩美術大学</p>
+          <h3 class="artist-name">Hana Shirai</h3>
+          <p class="artist-work">デジタルドローイング「Liminal」— 夢と現実のはざまにある情景を描いたイラストレーション</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOP -->
+  <section id="shop">
+    <h2 class="shop-headline reveal">服を買う。<br>アートを纏う。</h2>
+    <p class="shop-sub reveal">JUNGBURGのコレクションは、オンラインショップで購入いただけます。</p>
+    <a href="https://your-shop-url.com" class="shop-btn reveal" target="_blank" rel="noopener">
+      <span>オンラインショップへ →</span>
+    </a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo-text">jung burg</span>
+    <p class="footer-copy">© 2025 JUNGBURG. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 70);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
 </body>
 </html>
